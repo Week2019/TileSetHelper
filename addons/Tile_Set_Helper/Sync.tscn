@@ -1,0 +1,70 @@
+[gd_scene load_steps=3 format=3 uid="uid://nw68iqfedb00"]
+
+[ext_resource type="Script" uid="uid://b63tmcd80jj0f" path="res://addons/Tile_Set_Helper/Sync.gd" id="1_en04k"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_en04k"]
+
+[node name="Sync" type="AcceptDialog"]
+auto_translate_mode = 2
+title = "Sync"
+initial_position = 2
+size = Vector2i(500, 500)
+visible = true
+auto_translate = false
+script = ExtResource("1_en04k")
+
+[node name="Main" type="VBoxContainer" parent="."]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 492.0
+offset_bottom = 451.0
+
+[node name="HSeparator" type="HSeparator" parent="Main"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Main"]
+layout_mode = 2
+
+[node name="Source_Node" type="VBoxContainer" parent="Main/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="VSeparator" type="VSeparator" parent="Main/HBoxContainer"]
+layout_mode = 2
+
+[node name="Data_Panel" type="VBoxContainer" parent="Main/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Physic_Node" type="VBoxContainer" parent="Main/HBoxContainer/Data_Panel"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Title" type="Button" parent="Main/HBoxContainer/Data_Panel/Physic_Node" groups=["Button"]]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/focus = SubResource("StyleBoxEmpty_en04k")
+text = "Physics"
+
+[node name="HSeparator" type="HSeparator" parent="Main/HBoxContainer/Data_Panel/Physic_Node"]
+layout_mode = 2
+
+[node name="Terrain_Node" type="VBoxContainer" parent="Main/HBoxContainer/Data_Panel"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Title" type="Button" parent="Main/HBoxContainer/Data_Panel/Terrain_Node" groups=["Button"]]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/focus = SubResource("StyleBoxEmpty_en04k")
+text = "Terrain"
+
+[node name="HSeparator" type="HSeparator" parent="Main/HBoxContainer/Data_Panel/Terrain_Node"]
+layout_mode = 2
+
+[connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]

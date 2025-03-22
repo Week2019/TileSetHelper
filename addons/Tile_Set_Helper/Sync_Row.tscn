@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://bi7bc24c1nx0h"]
+
+[ext_resource type="Script" uid="uid://kekj6no70jib" path="res://addons/Tile_Set_Helper/Sync_Row.gd" id="1_7oop4"]
+
+[node name="Sync_Row" type="HBoxContainer"]
+alignment = 2
+script = ExtResource("1_7oop4")
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 2
+text = "Layer "
+
+[node name="Copy" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Copy"
+
+[node name="Paste" type="Button" parent="."]
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Paste"
