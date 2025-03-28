@@ -8,6 +8,7 @@ extends AcceptDialog
 @onready var custom_data_node: VBoxContainer = %Custom_Data_Node
 
 @onready var root: Node = get_tree().root
+@onready var buttons: Array[Node] = get_tree().get_nodes_in_group("Sync_Button")
 
 var sync_row: PackedScene = load("res://addons/Tile_Set_Helper/Sync_Row.tscn")
 
@@ -65,7 +66,6 @@ func update_view():
 		sync_row.title.text = "Layer " + str(layer_id)
 		sync_row.copy.pressed.connect(_on_layer_copy.bind(layer_id))
 		sync_row.paste.pressed.connect(_on_physics_paste.bind(layer_id))
-	physic_node.add_child(HSeparator.new())
 	physic_node.visible = physics_layers > 0
 	
 	var terrain_sets: int = tile_set.get_terrain_sets_count()
@@ -81,7 +81,6 @@ func update_view():
 			sync_row.title.text = tile_set.get_terrain_name(terrain_set, terrain_index)
 			sync_row.copy.pressed.connect(_on_terrain_copy.bind(terrain_mode))
 			sync_row.paste.pressed.connect(_on_terrain_paste.bind(terrain_mode, terrain_set, terrain_index))
-		terrain_node.add_child(HSeparator.new())
 	terrain_node.visible = terrain_sets > 0
 	
 	var navigation_layer: int = tile_set.get_navigation_layers_count()
@@ -91,7 +90,6 @@ func update_view():
 		sync_row.title.text = "Layer " + str(layer_id)
 		sync_row.copy.pressed.connect(_on_layer_copy.bind(layer_id))
 		sync_row.paste.pressed.connect(_on_navigation_paste.bind(layer_id))
-	navigation_node.add_child(HSeparator.new())
 	navigation_node.visible = navigation_layer > 0
 	
 	var custom_data_layers: int = tile_set.get_custom_data_layers_count()
@@ -103,8 +101,13 @@ func update_view():
 		sync_row.copy.pressed.connect(_on_layer_copy.bind(layer_id))
 		sync_row.copy.pressed.connect(_on_custom_data_copy.bind(custom_data_name))
 		sync_row.paste.pressed.connect(_on_custom_data_paste.bind(layer_id))
-	custom_data_node.add_child(HSeparator.new())
 	custom_data_node.visible = custom_data_layers > 0
+	
+	for node: Button in buttons:
+		node.pressed.connect(_on_button_pressed.bind(node))
+		var parent: Node = node.get_parent()
+		if parent.visible == true:
+			parent.add_sibling(HSeparator.new())
 
 func count_tiles_data() -> void:
 	for source_index: int in tile_set.get_source_count():
@@ -197,3 +200,9 @@ func _on_custom_data_paste(layer_id):
 func _on_visibility_changed() -> void:
 	if visible == false:
 		queue_free()
+
+func _on_button_pressed(node: Node):
+	var parent: Node = node.get_parent()
+	for child: Node in parent.get_children():
+		if child == node: continue
+		child.visible = !child.visible
