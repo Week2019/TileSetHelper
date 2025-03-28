@@ -93,4 +93,17 @@ text = "Custom Data"
 [node name="HSeparator" type="HSeparator" parent="Main/HBoxContainer/Data_Panel/Custom_Data_Node"]
 layout_mode = 2
 
+[node name="Occluder_Node" type="VBoxContainer" parent="Main/HBoxContainer/Data_Panel"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Title" type="Button" parent="Main/HBoxContainer/Data_Panel/Occluder_Node" groups=["Sync_Button"]]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/focus = SubResource("StyleBoxEmpty_en04k")
+text = "Occluder"
+
+[node name="HSeparator" type="HSeparator" parent="Main/HBoxContainer/Data_Panel/Occluder_Node"]
+layout_mode = 2
+
 [connection signal="visibility_changed" from="." to="." method="_on_visibility_changed"]

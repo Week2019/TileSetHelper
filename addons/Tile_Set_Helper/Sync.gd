@@ -6,6 +6,7 @@ extends AcceptDialog
 @onready var terrain_node: VBoxContainer = %Terrain_Node
 @onready var navigation_node: VBoxContainer = %Navigation_Node
 @onready var custom_data_node: VBoxContainer = %Custom_Data_Node
+@onready var occluder_node: VBoxContainer = %Occluder_Node
 
 @onready var root: Node = get_tree().root
 @onready var buttons: Array[Node] = get_tree().get_nodes_in_group("Sync_Button")
@@ -103,6 +104,15 @@ func update_view():
 		sync_row.paste.pressed.connect(_on_custom_data_paste.bind(layer_id))
 	custom_data_node.visible = custom_data_layers > 0
 	
+	var occluder_layers: int = tile_set.get_occlusion_layers_count()
+	for layer_id: int in occluder_layers:
+		var sync_row: HBoxContainer = sync_row.instantiate()
+		occluder_node.add_child(sync_row)
+		sync_row.title.text = "Custom Data - " + str(layer_id)
+		sync_row.copy.pressed.connect(_on_layer_copy.bind(layer_id))
+		sync_row.paste.pressed.connect(_on_occluder_paste.bind(layer_id))
+	occluder_node.visible = occluder_layers > 0
+	
 	for node: Button in buttons:
 		node.pressed.connect(_on_button_pressed.bind(node))
 		var parent: Node = node.get_parent()
@@ -196,6 +206,19 @@ func _on_custom_data_paste(layer_id):
 		var copy_tile_data: TileData = copy_tiles_data[key]
 		var custom_data = copy_tile_data.get_custom_data(copy_custom_data_layer_name)
 		paste_tile_data.set_custom_data(copy_custom_data_layer_name, custom_data)
+
+func _on_occluder_paste(layer_id):
+	for key: Dictionary in paste_tiles_data:
+		if copy_tiles_data.has(key) == false: continue
+		var paste_tile_data: TileData = paste_tiles_data[key]
+		var copy_tile_data: TileData = copy_tiles_data[key]
+		var paste_polygons_count: int = paste_tile_data.get_occluder_polygons_count(layer_id)
+		var copy_polygons_count: int = copy_tile_data.get_occluder_polygons_count(copy_layer_id)
+		for polygon_index: int in paste_polygons_count:
+			paste_tile_data.remove_occluder_polygon(layer_id, 0)
+		for polygon_index: int in copy_polygons_count:
+			paste_tile_data.add_occluder_polygon(layer_id)
+			paste_tile_data.set_occluder_polygon(layer_id, polygon_index, copy_tile_data.get_occluder_polygon(copy_layer_id, polygon_index))
 
 func _on_visibility_changed() -> void:
 	if visible == false:
