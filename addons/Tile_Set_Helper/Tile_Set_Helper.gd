@@ -16,7 +16,6 @@ func _enter_tree() -> void:
 
 func _on_editor_button_pressed():
 	var selected_nodes: Array[Node] = EditorInterface.get_selection().get_selected_nodes()
-	
 	for node: Node in selected_nodes:
 		if node is TileMapLayer:
 			if node.tile_set == null: continue

@@ -9,7 +9,6 @@ extends AcceptDialog
 @onready var occluder_node: VBoxContainer = %Occluder_Node
 
 @onready var root: Node = get_tree().root
-@onready var buttons: Array[Node] = get_tree().get_nodes_in_group("Sync_Button")
 
 var sync_row: PackedScene = load("res://addons/Tile_Set_Helper/Sync_Row.tscn")
 
@@ -113,7 +112,8 @@ func update_view():
 		sync_row.paste.pressed.connect(_on_occluder_paste.bind(layer_id))
 	occluder_node.visible = occluder_layers > 0
 	
-	for node: Button in buttons:
+	var titles: Array[Node] = find_children("Title")
+	for node: Button in titles:
 		node.pressed.connect(_on_button_pressed.bind(node))
 		var parent: Node = node.get_parent()
 		if parent.visible == true:
