@@ -182,12 +182,13 @@ func _on_terrain_paste(terrain_mode: int, terrain_set: int, terrain: int):
 		if copy_tiles_data.has(key) == false: continue
 		var paste_tile_data: TileData = paste_tiles_data[key]
 		var copy_tile_data: TileData = copy_tiles_data[key]
-		paste_tile_data.terrain_set = terrain_set
-		paste_tile_data.terrain = terrain
+		if copy_tile_data.terrain_set == -1: continue
+		if copy_tile_data.terrain != -1: paste_tile_data.terrain = terrain
 		for peering_bit: int in 16:
 			if copy_tile_data.is_valid_terrain_peering_bit(peering_bit) == true:
 				var current_terrain = copy_tile_data.get_terrain_peering_bit(peering_bit)
-				paste_tile_data.set_terrain_peering_bit(peering_bit, current_terrain)
+				if current_terrain != -1:
+					paste_tile_data.set_terrain_peering_bit(peering_bit, terrain)
 
 func _on_navigation_paste(layer_id: int):
 	for key: Dictionary in paste_tiles_data:
