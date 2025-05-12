@@ -183,6 +183,7 @@ func _on_terrain_paste(terrain_mode: int, terrain_set: int, terrain: int):
 		var paste_tile_data: TileData = paste_tiles_data[key]
 		var copy_tile_data: TileData = copy_tiles_data[key]
 		if copy_tile_data.terrain_set == -1: continue
+		paste_tile_data.terrain_set = terrain_set
 		if copy_tile_data.terrain != -1: paste_tile_data.terrain = terrain
 		for peering_bit: int in 16:
 			if copy_tile_data.is_valid_terrain_peering_bit(peering_bit) == true:
